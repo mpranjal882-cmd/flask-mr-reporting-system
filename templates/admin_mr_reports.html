@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}MR Wise Reports{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+  <h3 class="mb-4">📋 MR Wise Reports</h3>
+
+  <!-- MR Dropdown -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <form method="get" class="row g-3 align-items-end">
+        <div class="col-md-4">
+          <label class="form-label">Select MR</label>
+          <select name="mr_id" class="form-select" required>
+            <option value="">-- Select MR --</option>
+            <option value="all" {% if selected_mr=='all' %}selected{% endif %}>All MRs</option>
+            {% for mr in mrs %}
+              <option value="{{ mr.id }}" {% if selected_mr == (mr.id|string) %}selected{% endif %}>{{ mr.full_name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-3">
+          <button class="btn btn-primary">Show Reports</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  {% if reports %}
+  <!-- Export Buttons -->
+  <div class="d-flex justify-content-end mb-3">
+    <a href="{{ url_for('export_pdf', mr_id=selected_mr, start_date=None, end_date=None) }}" 
+       class="btn btn-danger me-2">📄 Export PDF</a>
+    <a href="{{ url_for('export_excel', mr_id=selected_mr, start_date=None, end_date=None) }}" 
+       class="btn btn-success">📊 Export Excel</a>
+  </div>
+
+  <!-- Report Table -->
+  <div class="card shadow-sm">
+   <div class="table-responsive">
+<table class="table table-striped table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Doctor</th>
+            <th>Hospital</th>
+            <th>Products</th>
+            <th>Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in reports %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ r.visit_date }}</td>
+            <td>{{ r.doctor_name }}</td>
+            <td>{{ r.hospital_name }}</td>
+            <td style="max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ r.products_promoted }}</td>
+            <td style="max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ r.remarks }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    </div>
+  </div>
+
+  {% else %}
+    {% if selected_mr %}
+      <p class="text-muted">No reports found for selected MR.</p>
+    {% endif %}
+  {% endif %}
+</div>
+
+{% endblock %}

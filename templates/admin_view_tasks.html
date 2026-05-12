@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% block title %}All Tasks{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <h4 class="fw-bold">📋 Assigned Tasks</h4>
+    <a href="{{ url_for('admin_add_task') }}" class="btn btn-success btn-sm shadow-sm">
+      ➕ Add Task
+    </a>
+  </div>
+
+  {% if tasks %}
+
+  <!-- 💻 Desktop Table -->
+  <div class="table-responsive d-none d-md-block">
+    <table class="table table-hover align-middle admin-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>MR</th>
+          <th>Task</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Chat</th>
+          <th>Reply</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for t in tasks %}
+        <tr>
+          <td>{{ loop.index }}</td>
+
+          <td>
+            <span class="fw-semibold text-primary">
+              {{ t.mr_name }}
+            </span>
+          </td>
+
+          <td>
+            <div class="task-title">
+              {{ t.title }}
+            </div>
+          </td>
+
+          <td>
+            <small class="text-muted">{{ t.task_date }}</small>
+          </td>
+
+          <td>
+            {% if t.status == 'completed' %}
+              <span class="badge bg-success-subtle text-success">✔ Completed</span>
+            {% else %}
+              <span class="badge bg-warning-subtle text-dark">⏳ Pending</span>
+            {% endif %}
+          </td>
+
+          <td>
+            <a href="{{ url_for('task_chat', task_id=t.id) }}" 
+               class="btn btn-primary btn-sm position-relative chat-btn">
+
+              💬
+
+              {% if t.unread > 0 %}
+              <span class="badge bg-danger chat-badge">
+                {{ t.unread }}
+              </span>
+              {% endif %}
+
+            </a>
+          </td>
+
+          <td>
+            {% if t.reply %}
+              <span class="text-success small">{{ t.reply }}</span>
+            {% else %}
+              <span class="text-muted small">No reply</span>
+            {% endif %}
+          </td>
+
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 📱 Mobile Card View -->
+  <div class="d-md-none">
+    {% for t in tasks %}
+    <div class="admin-task-card">
+
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <strong>{{ t.title }}</strong>
+        <span class="task-date">{{ t.task_date }}</span>
+      </div>
+
+      <div class="mb-2">
+        <span class="text-primary fw-semibold">👤 {{ t.mr_name }}</span>
+      </div>
+
+      <div class="mb-2">
+        {% if t.status == 'completed' %}
+          <span class="badge bg-success">✔ Completed</span>
+        {% else %}
+          <span class="badge bg-warning text-dark">⏳ Pending</span>
+        {% endif %}
+      </div>
+
+      <div class="mb-2">
+        <b>Reply:</b><br>
+        {% if t.reply %}
+          <span class="text-success">{{ t.reply }}</span>
+        {% else %}
+          <span class="text-muted">No reply yet</span>
+        {% endif %}
+      </div>
+
+      <a href="{{ url_for('task_chat', task_id=t.id) }}" 
+         class="btn btn-primary w-100 position-relative">
+
+        💬 Open Chat
+
+        {% if t.unread > 0 %}
+        <span class="badge bg-danger chat-badge-mobile">
+          {{ t.unread }}
+        </span>
+        {% endif %}
+
+      </a>
+
+    </div>
+    {% endfor %}
+  </div>
+
+  {% else %}
+    <p class="text-muted">No tasks found.</p>
+  {% endif %}
+
+</div>
+{% endblock %}

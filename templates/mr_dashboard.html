@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}MR Dashboard{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+  <h3 class="fw-bold text-primary mb-3">
+    👋 Welcome, {{ current_user.full_name or current_user.username }}
+  </h3>
+
+  <!-- 🌟 Summary Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-6 col-lg-3 col-6">
+      <div class="card border-0 shadow-sm text-center" style="background:#e3f2fd;">
+        <div class="card-body">
+          <h6 class="text-primary fw-semibold">Total Reports</h6>
+          <h2 class="fw-bold text-dark">{{ reports|length }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3 col-6">
+      <div class="card border-0 shadow-sm text-center" style="background:#e8f5e9;">
+        <div class="card-body">
+          <h6 class="text-success fw-semibold">Upcoming Visits</h6>
+          <h2 class="fw-bold text-dark">{{ upcoming_visits|length if upcoming_visits else 0 }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🗓️ Recent Reports -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-dark text-white fw-bold">
+      🗓️ My Recent Reports
+    </div>
+    <div class="card-body p-0">
+      {% if reports %}
+    <div class="table-responsive">
+<table class="table table-striped table-hover">
+          <thead class="table-primary">
+            <tr>
+              <th>Date</th>
+              <th>Doctor</th>
+              <th>Hospital</th>
+              <th>Products</th>
+              <th>Remarks</th>
+              <th>Next Visit</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in reports %}
+            <tr>
+              <td>{{ r.visit_date }}</td>
+              <td>{{ r.doctor_name }}</td>
+              <td>{{ r.hospital_name }}</td>
+              <td style="max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ r.products_promoted }}</td>
+              <td style="max-width:180px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ r.remarks }}</td>
+              <td>
+                {% if r.next_visit_date %}
+                  <span class="badge bg-info text-dark">{{ r.next_visit_date }}</span>
+                {% else %}
+                  <span class="text-muted">—</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+        <p class="text-muted p-3">No reports found yet.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- 🔔 Upcoming Visits -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-primary text-white fw-bold">
+      🔔 Upcoming Visits (Next 7 Days)
+    </div>
+    <div class="card-body p-0">
+      {% if upcoming_visits %}
+      <div class="table-responsive">
+        <table class="table table-striped table-hover text-nowrap mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Doctor</th>
+              <th>Hospital</th>
+              <th>Next Visit Date</th>
+              <th>Remarks</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for v in upcoming_visits %}
+            <tr>
+              <td>{{ v.doctor_name }}</td>
+              <td>{{ v.hospital_name }}</td>
+              <td><span class="fw-semibold">{{ v.next_visit_date }}</span></td>
+              <td>{{ v.remarks }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+        <p class="text-muted p-3 mb-0">No upcoming visits scheduled.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

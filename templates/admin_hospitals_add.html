@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Add Hospital{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <h4 class="mb-3">Add Hospital</h4>
+  <form method="POST">
+    <div class="mb-3">
+      <label class="form-label">Hospital Name *</label>
+      <input type="text" name="name" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Address</label>
+      <textarea name="address" class="form-control" rows="2"></textarea>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">City</label>
+      <input type="text" name="city" class="form-control">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Phone</label>
+      <input type="text" name="phone" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary">Save Hospital</button>
+    <a href="{{ url_for('admin_hospitals') }}" class="btn btn-secondary">Back</a>
+  </form>
+</div>
+{% endblock %}

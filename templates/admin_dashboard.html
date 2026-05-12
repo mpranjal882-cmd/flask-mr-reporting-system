@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+  <h3 class="mb-4 text-primary fw-bold">💼 Admin Dashboard</h3>
+
+  <!-- 🌟 Summary Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-4 col-6">
+      <div class="card border-0 shadow-sm text-center" style="background: #e3f2fd;">
+        <div class="card-body">
+          <h6 class="text-primary fw-semibold">Total MRs</h6>
+          <h2 class="fw-bold text-dark">{{ mrs|length }}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 col-6">
+      <div class="card border-0 shadow-sm text-center" style="background: #e8f5e9;">
+        <div class="card-body">
+          <h6 class="text-success fw-semibold">Total Reports</h6>
+          <h2 class="fw-bold text-dark">{{ reports|length }}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 col-12">
+      <div class="card border-0 shadow-sm text-center" style="background: #e0f7fa;">
+        <div class="card-body">
+          <h6 class="text-info fw-semibold">Last Updated</h6>
+          <h5 class="fw-bold text-dark">{{ reports[0].visit_date if reports else "—" }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 📝 Latest Reports -->
+  <div class="card shadow-sm">
+    <div class="card-header bg-dark text-white fw-bold">📝 Latest Reports</div>
+    <div class="card-body p-0">
+      {% if reports %}
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle text-nowrap mb-0">
+          <thead class="table-primary sticky-top">
+            <tr>
+              <th>#</th>
+              <th>MR Name</th>
+              <th>Doctor</th>
+              <th>Hospital</th>
+              <th>Date</th>
+              <th>Products</th>
+              <th>Remarks</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in reports %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ r.mr_name }}</td>
+              <td>{{ r.doctor_name }}</td>
+              <td>{{ r.hospital_name }}</td>
+              <td>{{ r.visit_date }}</td>
+              <td style="max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                {{ r.products_promoted }}
+              </td>
+              <td style="max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                {{ r.remarks }}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+        <p class="text-muted p-3 mb-0">No reports found.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

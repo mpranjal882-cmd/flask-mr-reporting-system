@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Create MR{% endblock %}
+{% block content %}
+<div class="col-md-6">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">{{ 'Admin Registration' if is_admin_registration else 'Create MR Account' }}</h5>
+      <form method="post" onsubmit="return validateCreateUser();">
+        <div class="mb-3">
+          <label class="form-label">Full Name</label>
+          <input class="form-control" name="full_name" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <input class="form-control" name="username" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input class="form-control" name="password" type="password" required>
+        </div>
+        <button class="btn btn-primary">Create</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

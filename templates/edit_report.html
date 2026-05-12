@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Edit Report{% endblock %}
+{% block content %}
+<div class="col-md-8">
+  <div class="card">
+    <div class="card-body">
+      <h5>Edit Report</h5>
+      <form method="post" onsubmit="return validateReportForm();">
+        <div class="mb-3">
+          <label class="form-label">Doctor Name</label>
+          <input class="form-control" name="doctor_name" id="doctor_name" value="{{ report.doctor_name }}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Hospital Name</label>
+          <input class="form-control" name="hospital_name" id="hospital_name" value="{{ report.hospital_name }}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Location</label>
+          <input class="form-control" name="location" id="location" value="{{ report.location }}">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Date</label>
+          <input class="form-control" name="visit_date" id="visit_date" type="date" value="{{ report.visit_date }}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Products Promoted</label>
+          <textarea class="form-control" name="products_promoted">{{ report.products_promoted }}</textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Remarks</label>
+          <textarea class="form-control" name="remarks">{{ report.remarks }}</textarea>
+        </div>
+        <button class="btn btn-primary">Update</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

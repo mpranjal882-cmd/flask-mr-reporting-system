@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}Add Report{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <h4 class="mb-3">Add Daily Visit Report</h4>
+  <form method="POST">
+    
+    <!-- Doctor Dropdown -->
+    <div class="mb-3">
+      <label class="form-label">Doctor *</label>
+      <select class="form-select" name="doctor_id" id="doctor_id" required>
+        <option value="">-- Select Doctor --</option>
+        {% for d in doctors %}
+          <option value="{{ d.id }}">{{ d.name }}{% if d.specialization %} ({{ d.specialization }}){% endif %}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <!-- Hospital Dropdown -->
+    <div class="mb-3">
+      <label class="form-label">Hospital *</label>
+      <select class="form-select" name="hospital_id" id="hospital_id" required>
+        <option value="">-- Select Hospital --</option>
+        {% for h in hospitals %}
+          <option value="{{ h.id }}">{{ h.name }}{% if h.city %} - {{ h.city }}{% endif %}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <!-- Location -->
+    <div class="mb-3">
+      <label class="form-label">Location</label>
+      <input type="text" name="location" class="form-control" placeholder="Enter location">
+    </div>
+
+    <!-- Visit Date -->
+    <div class="mb-3">
+      <label class="form-label">Visit Date *</label>
+      <input type="date" name="visit_date" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Next Visit Date</label>
+      <input type="date" class="form-control" name="next_visit_date">
+    </div>
+
+    <!-- Products Promoted -->
+    <div class="mb-3">
+      <label class="form-label">Products Promoted</label>
+      <textarea name="products_promoted" class="form-control" rows="2" placeholder="Enter product names"></textarea>
+    </div>
+
+    <!-- Remarks -->
+    <div class="mb-3">
+      <label class="form-label">Remarks</label>
+      <textarea name="remarks" class="form-control" rows="2" placeholder="Enter remarks"></textarea>
+    </div>
+
+
+
+<div class="mb-3">
+  <label class="form-label">Products Promoted</label>
+  <select class="form-select" name="products_promoted" required>
+    <option value="">-- Select Product --</option>
+    {% for p in products %}
+      <option value="{{ p.name }}">{{ p.name }}</option>
+    {% endfor %}
+  </select>
+</div>
+
+  <div class="mt-3">
+      <button type="submit" class="btn btn-primary">💾 Save Report</button>
+      <a href="{{ url_for('mr_dashboard') }}" class="btn btn-secondary">Cancel</a>
+    </div>
+
+<h5 class="mt-4">📊 MR Wise Visit Chart</h5>
+<canvas id="mrChart" width="400" height="200"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('mrChart');
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: [{% for m in mrs %}'{{ m.full_name }}',{% endfor %}],
+    datasets: [{
+      label: 'Visits Count',
+      data: [{% for m in mrs %}{{ m.reports_count | default(0) }},{% endfor %}],
+      backgroundColor: '#0d6efd'
+    }]
+  },
+});
+</script>
+  </form>
+</div>
+    <!-- Submit Button -->
+  
+{% endblock %}

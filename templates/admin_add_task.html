@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Assign Task{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <h3>🗓️ Assign New Task</h3>
+
+  <form method="post" class="card shadow-sm p-4">
+    <div class="mb-3">
+      <label class="form-label">Select MR</label>
+      <select class="form-select" name="mr_id" required>
+        <option value="">-- Select MR --</option>
+        {% for mr in mrs %}
+        <option value="{{ mr.id }}">{{ mr.full_name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Task Title</label>
+      <input type="text" class="form-control" name="title" placeholder="Enter task title" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Task Details</label>
+      <textarea class="form-control" name="description" rows="3" placeholder="Describe task"></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Task Date</label>
+      <input type="date" class="form-control" name="task_date" value="{{ today }}">
+    </div>
+
+    <button class="btn btn-primary">📩 Assign Task</button>
+  </form>
+</div>
+{% endblock %}

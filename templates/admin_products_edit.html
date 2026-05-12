@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h3>Edit Product</h3>
+  <form method="POST">
+    <div class="mb-3">
+      <label class="form-label">Product Name *</label>
+      <input type="text" name="name" class="form-control" value="{{ p.name }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea name="description" class="form-control">{{ p.description }}</textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Price (₹)</label>
+      <input type="number" name="price" step="0.01" class="form-control" value="{{ p.price }}">
+    </div>
+
+    <button type="submit" class="btn btn-success">💾 Update Product</button>
+    <a href="{{ url_for('admin_products') }}" class="btn btn-secondary">↩ Back</a>
+  </form>
+</div>
+{% endblock %}
